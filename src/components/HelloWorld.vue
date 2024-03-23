@@ -202,7 +202,7 @@ const handleKeyUp = () => {
   <div class="input-output">
     <img v-if="srcImgUrl" id="srcImg" @load="loadimg" style="width: 500px;" :src="srcImgUrl" />
 
-    <img v-else class="empty-img" :src="'../src/assets/empty.svg'" alt="No Image" />
+    <img v-else class="empty-img" :src="'/empty.svg'" alt="No Image" />
     <canvas
       v-if="srcImgUrl"
       @mousedown="() => isKeydown = true"
