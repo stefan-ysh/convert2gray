@@ -136,7 +136,7 @@ const initChart = () => {
     xAxis: {
       type: 'category',
       splitLine: {
-        show: true
+        show: false
       }
     },
     yAxis: {
@@ -146,7 +146,7 @@ const initChart = () => {
       min: 0,
       max: 255,
       splitLine: {
-        show: true
+        show: false
       }
     },
     series: [
