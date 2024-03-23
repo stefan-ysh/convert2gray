@@ -154,7 +154,8 @@ const initChart = () => {
         name: 'Fake Data',
         type: 'line',
         showSymbol: false,
-        data: data.value
+        data: data.value,
+        smooth: true
       }
     ]
   };
