@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>toGray</title>
+
+    <!--两张图片格式为左浮动，处在一行-->
+    <style type="text/css">
+      .InputOutput {
+        float: left;
+        margin: 10px;
+      }
+      #srcImg {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <!--若 opencv.js 文件加载成功，则会显示“opencv.js is ready.”-->
+    <p id="status">Opencv is loading...</p>
+    <!--图片读入区域-->
+    <div class="InputOutput">
+      <div class="caption">
+        源文件<input type="file" id="inputFile" name="file" />
+      </div>
+      <img id="srcImg" src="./empty.svg" alt="No Image" />
+    </div>
+
+    <!--结果展示区域-->
+    <div class="InputOutput">
+      <div class="caption">灰度图</div>
+      <canvas id="dstImg"></canvas>
+      <canvas id="pathCanvas"></canvas>
+    </div>
+
+    <!--将图片转换为灰度图，并在 canvas 中显示-->
+    <script type="text/javascript">
+      //   <!--读入图片-->
+      let imgElement = document.getElementById("srcImg");
+      let fileElement = document.getElementById("inputFile");
+      fileElement.addEventListener(
+        "change",
+        (e) => {
+          imgElement.src = URL.createObjectURL(e.target.files[0]);
+        },
+        false
+      );
+
+      //   <!--转换为灰度图-->
+      imgElement.onload = function () {
+        let src = cv.imread(imgElement);
+        let gray = new cv.Mat();
+        cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+        cv.imshow("dstImg", gray);
+        src.delete();
+        dst.delete();
+      };
+
+      //   <!--成功加载 opencv.js 后，status 标签会显示“opencv.js is ready.”-->
+      function onOpenCvReady() {
+        document.getElementById("status").innerHTML = "opencv.js is ready.";
+      }
+    </script>
+    <script
+      async
+      src="https://docs.opencv.org/4.5.3/opencv.js"
+      onload="onOpenCvReady();"
+      type="text/javascript"
+    ></script>
+    <script>
+      // 获取画布元素
+      const canvas = document.getElementById("dstImg");
+      // 获取画布元素和上下文
+      const ctx = canvas.getContext("2d");
+
+      // 绘制一些内容到canvas上
+      ctx.fillStyle = "blue";
+      ctx.fillRect(0, 0, 150, 100);
+
+      // 鼠标事件处理函数
+      function getMouseGrayscale(event) {
+        // 获取鼠标位置
+        const mouseX = event.offsetX;
+        const mouseY = event.offsetY;
+
+        // 获取鼠标位置的像素颜色
+        const pixel = ctx.getImageData(mouseX, mouseY, 10, 10).data;
+
+        // 计算灰度值
+        const grayscale = Math.round(
+          0.299 * pixel[0] + 0.587 * pixel[1] + 0.114 * pixel[2]
+        );
+
+        // 在控制台输出灰度值
+        console.log(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`);
+
+        // 绘制一个小像素在鼠标位置
+        // ctx.fillRect(mouseX, mouseY, 10, 10);
+      }
+
+      // 绑定鼠标事件
+      canvas.addEventListener("mousemove", getMouseGrayscale);
+
+
+      // 绘制鼠标路径
+      // // 获取原始canvas和路径canvas
+      // const originalCanvas = document.getElementById("dstImg");
+      // const pathCanvas = document.getElementById("pathCanvas");
+      // const ctx = originalCanvas.getContext("2d");
+      // const pathCtx = pathCanvas.getContext("2d");
+      // pathCtx.width = imgElement.width;
+      // pathCtx.height = imgElement.height;
+
+      // // 绘制一些内容到原始canvas上
+      // ctx.fillStyle = "blue";
+      // ctx.fillRect(0, 0, 150, 100);
+
+      // // 初始化鼠标位置变量
+      // let isMouseDown = false;
+      // let lastMouseX = 0;
+      // let lastMouseY = 0;
+
+      // // 鼠标按下事件处理函数
+      // function onMouseDown(event) {
+      //   isMouseDown = true;
+      //   lastMouseX = event.offsetX;
+      //   lastMouseY = event.offsetY;
+      //   pathCtx.beginPath();
+      //   pathCtx.moveTo(lastMouseX, lastMouseY);
+      // }
+
+      // // 鼠标移动事件处理函数
+      // function onMouseMove(event) {
+      //   if (!isMouseDown) return;
+
+      //   // 绘制路径
+      //   pathCtx.lineTo(event.offsetX, event.offsetY);
+      //   pathCtx.stroke();
+
+      //   // 更新最后鼠标位置
+      //   lastMouseX = event.offsetX;
+      //   lastMouseY = event.offsetY;
+
+      //   // 计算并输出灰度值
+      //   const grayscale = calculateGrayscale(event.offsetX, event.offsetY);
+      //   console.log(
+      //     `Grayscale value at (${event.offsetX}, ${event.offsetY}): ${grayscale}`
+      //   );
+      // }
+
+      // // 鼠标释放事件处理函数
+      // function onMouseUp() {
+      //   isMouseDown = false;
+      // }
+
+      // // 灰度值计算函数
+      // function calculateGrayscale(x, y) {
+      //   const pixel = ctx.getImageData(x, y, 1, 1).data;
+      //   const grayscale = Math.round(
+      //     0.299 * pixel[0] + 0.587 * pixel[1] + 0.114 * pixel[2]
+      //   );
+      //   return grayscale;
+      // }
+
+      // // 绑定事件监听器
+      // originalCanvas.addEventListener("mousedown", onMouseDown);
+      // originalCanvas.addEventListener("mousemove", onMouseMove);
+      // originalCanvas.addEventListener("mouseup", onMouseUp);
+    </script>
+  </body>
+</html>
