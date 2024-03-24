@@ -164,23 +164,8 @@ const initChart = () => {
       }
     ]
   };
-  // setInterval(function () {
-  //   for (var i = 0; i < 5; i++) {
-  //     data.shift();
-  //     data.push(randomData());
-  //   }
-  //   myChart.setOption({
-  //     series: [
-  //       {
-  //         data: data
-  //       }
-  //     ]
-  //   });
-  // }, 1000);
   // 使用刚指定的配置项和数据显示图表。
   myChart.value.setOption(option);
-  // resize 
-  myChart.value.resize()
 }
 const handleKeyUp = () => {
   isKeydown.value = false
