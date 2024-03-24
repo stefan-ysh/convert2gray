@@ -29,6 +29,12 @@ const loadimg = () => {
   src.delete();
 }
 const handleUpload = () => {
+  // 清除之前数据
+  data.value = []
+  // 清除之前的图表
+  myChart.value && myChart.value.clear()
+  // 清楚图片 src
+  srcImgUrl.value = ''
   const uploadInput = document.getElementById('inputFile')
   uploadInput && uploadInput.click()
 }
