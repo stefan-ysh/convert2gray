@@ -12,10 +12,11 @@ const myChart = ref()
 const chartContainer = ref()
 import * as echarts from "echarts";
 import { onMounted, onUnmounted, ref } from 'vue';
-import { ElMessage } from 'element-plus'
 const srcImgUrl = ref()
 const changeIpu = (e: any) => {
   srcImgUrl.value = URL.createObjectURL(e.target.files[0])
+  // 清除之前数据,避免无法上传同一个文件
+  e.target.value = '';
 }
 const loadimg = () => {
   const cv = (window as any).opencv
@@ -32,7 +33,12 @@ const handleUpload = () => {
   // 清除之前数据
   data.value = []
   // 清除之前的图表
-  // myChart.value && myChart.value.clear()
+    // 重新渲染
+  myChart.value && myChart.value.setOption({
+    series: [{
+      data: data.value
+    }]
+  })
   // 清楚图片 src
   srcImgUrl.value = ''
   const uploadInput = document.getElementById('inputFile')
@@ -81,9 +87,6 @@ const getMouseGrayscale = (event: MouseEvent) => {
 
   // 在控制台输出灰度值
   // console.log(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`);
-  // 清除所有的 message 消息
-  ElMessage.closeAll()
-  // ElMessage(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`)
   data.value.push({
     name: `(${mouseX}, ${mouseY})`,
     value: [`${data.value.length}`, grayscale]
@@ -119,6 +122,7 @@ const initChart = () => {
     title: {
       // 灰度图
       text: 'Grayscale Line Chart',
+      left: 'center'
     },
     tooltip: {
       show: true,
@@ -167,9 +171,10 @@ const initChart = () => {
     //   }
     // ],
     grid: {
-      left: '5%',
-      right: '5%',
+      left: '2%',
+      right: '2%',
       bottom: '5%',
+      top: '10%',
       containLabel: true
     },
     xAxis: {
@@ -200,20 +205,20 @@ const initChart = () => {
       {
         name: 'Fake Data',
         type: 'line',
-        showSymbol: true,
-        // 圆点 tooltip
-        symbol: 'circle',
-        symbolSize: 2,
-        // 圆点颜色
-        itemStyle: {
-          color: '#409EFF'
-        },
-        // 圆点 tooltip
-        label: {
-          show: true,
-          position: 'top',
-          color: '#409EFF'
-        },
+        showSymbol: false,
+        // // 圆点 tooltip
+        // symbol: 'circle',
+        // symbolSize: 2,
+        // // 圆点颜色
+        // itemStyle: {
+        //   color: '#409EFF'
+        // },
+        // // 圆点 tooltip
+        // label: {
+        //   show: true,
+        //   position: 'top',
+        //   color: '#409EFF'
+        // },
         data: data.value,
         smooth: true
       }
@@ -252,22 +257,13 @@ onUnmounted(() => {
     <el-button type="default" @click="handleUpload">Select Image</el-button>
     <el-button type="primary" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
     <!--图片读入区域-->
-    <input type="file" @change="changeIpu" id="inputFile" name="file" class="hidden" />
-  </div>
-  <!-- 图片caption -->
-  <div v-if="srcImgUrl" class="w-full flex items-center justify-around">
-    <div>
-      <el-tag size="large">Before</el-tag>
-    </div>
-    <div>
-      <el-tag size="large">After</el-tag>
-    </div>
+    <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
   </div>
   <!--结果展示区域-->
-  <div class="w-full flex justify-evenly items-center flex-col md:flex-row">
+  <div class="w-[100vw] flex justify-evenly items-center flex-col md:flex-row">
     <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto w-1/2 mr-1" :src="srcImgUrl" />
 
-    <img v-else class="w-1/2" :src="'/empty.svg'" alt="No Image" />
+    <img v-else class="w-1/3" :src="'/empty.svg'" alt="No Image" />
     <canvas
       class="mt-10 md:mt-0 ml-1 w-1/2"
       v-if="srcImgUrl"
@@ -277,4 +273,13 @@ onUnmounted(() => {
       id="dstImg"
     />
   </div>
+  <!-- 图片caption -->
+  <!-- <div v-if="srcImgUrl" class="w-full flex items-center justify-around">
+    <div>
+      <el-tag size="large">Before</el-tag>
+    </div>
+    <div>
+      <el-tag size="large">After</el-tag>
+    </div>
+  </div> -->
 </template>
