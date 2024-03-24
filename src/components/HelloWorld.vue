@@ -192,7 +192,7 @@ const handleKeyUp = () => {
 <template>
 
   <div class="operation-area">
-    <div id="main" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="main" style="width: 100%; height: 250px"></div>
+    <div id="main" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="main" style="width: 100%; height: 300px"></div>
 
     <el-button type="default" id='uploadFile' @click="handleUpload">Select Image</el-button>
     <el-button type="primary" id='uploadFile' :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
