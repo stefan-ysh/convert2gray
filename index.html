@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,13 +6,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convert 2 Gray</title>
   </head>
+  <style>
+    :root {
+      font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      font-weight: 400;
+
+      color-scheme: light dark;
+      color: rgba(255, 255, 255, 0.87);
+      background-color: #242424;
+
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      display: flex;
+    }
+    .loader {
+      /* 相对定位 */
+      position: absolute ;
+      width: 100%;
+      height: 60px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .loader span {
+      /* 绝对定位 */
+      position: absolute;
+      width: 30px;
+      height: 60px;
+      line-height: 60px;
+      margin: 0 10px;
+      color: #fff;
+      font-size: 40px;
+      text-align: center;
+      /* 默认旋转180度，不透明度为0 */
+      transform: rotate(180deg);
+      opacity: 0;
+      /* 执行动画：动画名 时长 线性的 无限次播放 */
+      animation: move 2.5s linear infinite;
+    }
+    .loader span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -20px;
+      width: 30px;
+      height: 5px;
+      border-radius: 50%;
+      /* 投影效果+模糊 */
+      background-color: rgba(0, 0, 0, 0.15);
+      filter: blur(1.5px);
+    }
+    /* 分别为每一个span这是动画延迟 */
+    .loader span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .loader span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    .loader span:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+    .loader span:nth-child(5) {
+      animation-delay: 0.8s;
+    }
+    .loader span:nth-child(6) {
+      animation-delay: 1s;
+    }
+    .loader span:nth-child(7) {
+      animation-delay: 1.2s;
+    }
+    .loader span:nth-child(8) {
+      animation-delay: 1.4s;
+    }
+    .loader span:nth-child(9) {
+      animation-delay: 1.6s;
+    }
+    .loader span:nth-child(10) {
+      animation-delay: 1.8s;
+    }
+
+    /* 定义动画 */
+    @keyframes move {
+      0% {
+        right: 0;
+        opacity: 0;
+      }
+      35% {
+        right: 41%;
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      65% {
+        right: 59%;
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        right: 100%;
+        transform: rotate(-180deg);
+        opacity: 0;
+      }
+    }
+  </style>
   <body>
-    <div id="app"></div>
+    <div id="app" style="display: none"></div>
+    <div id="loading" class="loader">
+      <span>L</span>
+      <span>O</span>
+      <span>A</span>
+      <span>D</span>
+      <span>I</span>
+      <span>N</span>
+      <span>G</span>
+    </div>
     <script>
       function onloadCallback() {
         console.log("opencv.js is ready");
         // 赋值给全局对象
         window.opencv = cv;
+        // 隐藏加载中
+        document.getElementById("loading").style.display = "none";
+        // 显示app
+        document.getElementById("app").style.display = "block";
       }
     </script>
     <script
