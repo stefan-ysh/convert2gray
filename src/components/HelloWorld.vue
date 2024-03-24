@@ -32,7 +32,7 @@ const handleUpload = () => {
   // 清除之前数据
   data.value = []
   // 清除之前的图表
-  myChart.value && myChart.value.clear()
+  // myChart.value && myChart.value.clear()
   // 清楚图片 src
   srcImgUrl.value = ''
   const uploadInput = document.getElementById('inputFile')
@@ -83,7 +83,7 @@ const getMouseGrayscale = (event: MouseEvent) => {
   // console.log(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`);
   // 清除所有的 message 消息
   ElMessage.closeAll()
-  ElMessage(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`)
+  // ElMessage(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`)
   data.value.push({
     name: `(${mouseX}, ${mouseY})`,
     value: [`${data.value.length}`, grayscale]
@@ -192,7 +192,7 @@ const initChart = () => {
           type: 'dashed',
           color: '#eee',
           width: 1,
-          opacity: 0.2
+          opacity: 0.4
         }
       }
     },
@@ -200,7 +200,20 @@ const initChart = () => {
       {
         name: 'Fake Data',
         type: 'line',
-        showSymbol: false,
+        showSymbol: true,
+        // 圆点 tooltip
+        symbol: 'circle',
+        symbolSize: 2,
+        // 圆点颜色
+        itemStyle: {
+          color: '#409EFF'
+        },
+        // 圆点 tooltip
+        label: {
+          show: true,
+          position: 'top',
+          color: '#409EFF'
+        },
         data: data.value,
         smooth: true
       }
