@@ -204,7 +204,7 @@ const handleKeyUp = () => {
 
 <template>
 
-  <div class="w-full">
+  <div class="w-full mb-2">
     <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-full h-80"></div>
 
     <el-button type="default" @click="handleUpload">Select Image</el-button>
