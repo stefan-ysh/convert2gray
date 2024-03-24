@@ -11,7 +11,8 @@ const isKeydown = ref(false)
 const myChart = ref()
 const chartContainer = ref()
 import * as echarts from "echarts";
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import { ElMessage } from 'element-plus'
 const srcImgUrl = ref()
 const changeIpu = (e: any) => {
   srcImgUrl.value = URL.createObjectURL(e.target.files[0])
@@ -74,6 +75,9 @@ const getMouseGrayscale = (event: MouseEvent) => {
 
   // 在控制台输出灰度值
   // console.log(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`);
+  // 清除所有的 message 消息
+  ElMessage.closeAll()
+  ElMessage(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`)
   data.value.push({
     name: `(${mouseX}, ${mouseY})`,
     value: [`${data.value.length}`, grayscale]
@@ -173,7 +177,13 @@ const initChart = () => {
       min: 0,
       max: 255,
       splitLine: {
-        show: false
+        show: true,
+        lineStyle: {
+          type: 'dashed',
+          color: '#eee',
+          width: 1,
+          opacity: 0.2
+        }
       }
     },
     series: [
@@ -188,7 +198,6 @@ const initChart = () => {
   };
   // 使用刚指定的配置项和数据显示图表。
   myChart.value.setOption(option);
-  // myChart.value && myChart.value.resize()
 }
 const handleKeyUp = () => {
   isKeydown.value = false
@@ -200,6 +209,16 @@ const handleKeyUp = () => {
     }]
   })
 }
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    myChart.value && myChart.value.resize()
+  })
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {
+    myChart.value && myChart.value.resize()
+  })
+})
 </script>
 
 <template>
@@ -210,15 +229,15 @@ const handleKeyUp = () => {
     <el-button type="default" @click="handleUpload">Select Image</el-button>
     <el-button type="primary" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
     <!--图片读入区域-->
-    <input type="file" @change="changeIpu" id="inputFile" name="file" style='display:none' />
+    <input type="file" @change="changeIpu" id="inputFile" name="file" class="hidden" />
   </div>
   <!--结果展示区域-->
   <div class="w-full flex justify-evenly items-center flex-col md:flex-row">
-    <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto" style="width: 500px;" :src="srcImgUrl" />
+    <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto w-1/2 mr-1" :src="srcImgUrl" />
 
     <img v-else class="w-1/2" :src="'/empty.svg'" alt="No Image" />
     <canvas
-      class="mt-10 md:mt-0"
+      class="mt-10 md:mt-0 ml-1 w-1/2"
       v-if="srcImgUrl"
       @mousedown="() => isKeydown = true"
       @mouseup="handleKeyUp"

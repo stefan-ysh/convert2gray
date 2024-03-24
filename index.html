@@ -129,8 +129,8 @@
         console.log("opencv.js is ready");
         // 赋值给全局对象
         window.opencv = cv;
-        // 隐藏加载中
-        document.getElementById("loading").style.display = "none";
+        // 移除加载中
+        document.body.removeChild(document.getElementById("loading"));
         // 显示app
         document.getElementById("app").style.display = "flex";
       }
