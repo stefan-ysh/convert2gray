@@ -222,7 +222,6 @@ const handleKeyUp = () => {
 <style scoped>
 .operation-area {
   width: 140vh;
-  margin-bottom: 20px;
 }
 
 .input-output {
