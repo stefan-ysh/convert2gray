@@ -141,15 +141,15 @@ const initChart = () => {
         animation: true
       }
     },
-    // toolbox: {
-    //   feature: {
-    //     // dataZoom: {
-    //     //   yAxisIndex: 'none'
-    //     // },
-    //     // restore: {},
-    //     saveAsImage: {}
-    //   }
-    // },
+    toolbox: {
+      feature: {
+        // dataZoom: {
+        //   yAxisIndex: 'none'
+        // },
+        // restore: {},
+        saveAsImage: {}
+      }
+    },
     // dataZoom: [
     //   {
     //     show: true,
