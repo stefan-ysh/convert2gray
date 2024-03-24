@@ -9,9 +9,8 @@ const data = ref<any[]>([
 ]);
 const isKeydown = ref(false)
 const myChart = ref()
-const main = ref()
+const chartContainer = ref()
 import * as echarts from "echarts";
-import { onMounted } from "vue";
 import { ref } from 'vue';
 const srcImgUrl = ref()
 const changeIpu = (e: any) => {
@@ -46,13 +45,14 @@ const saveImage = () => {
 
 // 鼠标事件处理函数
 const getMouseGrayscale = (event: MouseEvent) => {
+  !myChart.value && initChart()
   if (!isKeydown.value) {
     // return
   }
   // 获取画布元素
   const canvas = document.getElementById("dstImg") as HTMLCanvasElement;
   // 获取画布元素和上下文
-  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true }) as CanvasRenderingContext2D;
   if (!ctx) {
     return;
   }
@@ -89,13 +89,10 @@ const getMouseGrayscale = (event: MouseEvent) => {
   // ctx.fillRect(mouseX, mouseY, 1, 1);
 }
 
-onMounted(() => {
-  initChart()
-})
 const initChart = () => {
 
   // 基于准备好的dom，初始化echarts实例
-  myChart.value = echarts.init(main.value);
+  myChart.value = echarts.init(chartContainer.value);
   // const data = [
   //   {
   //     value: [1, 2]
@@ -191,6 +188,7 @@ const initChart = () => {
   };
   // 使用刚指定的配置项和数据显示图表。
   myChart.value.setOption(option);
+  // myChart.value && myChart.value.resize()
 }
 const handleKeyUp = () => {
   isKeydown.value = false
@@ -206,20 +204,21 @@ const handleKeyUp = () => {
 
 <template>
 
-  <div class="w-[140vh]">
-    <div id="main" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="main" style="width: 100%; height: 300px"></div>
+  <div class="w-full">
+    <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-full h-80"></div>
 
-    <el-button type="default" id='uploadFile' @click="handleUpload">Select Image</el-button>
-    <el-button type="primary" id='uploadFile' :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
+    <el-button type="default" @click="handleUpload">Select Image</el-button>
+    <el-button type="primary" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
     <!--图片读入区域-->
     <input type="file" @change="changeIpu" id="inputFile" name="file" style='display:none' />
   </div>
   <!--结果展示区域-->
-  <div class="w-full flex justify-evenly items-center mt-5 flex-col md:flex-row">
+  <div class="w-full flex justify-evenly items-center flex-col md:flex-row">
     <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto" style="width: 500px;" :src="srcImgUrl" />
 
     <img v-else class="w-1/2" :src="'/empty.svg'" alt="No Image" />
     <canvas
+      class="mt-10 md:mt-0"
       v-if="srcImgUrl"
       @mousedown="() => isKeydown = true"
       @mouseup="handleKeyUp"
