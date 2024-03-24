@@ -94,7 +94,11 @@ const getMouseGrayscale = (event: MouseEvent) => {
 }
 
 const initChart = () => {
-
+  // let theme = 'light';
+// 图表主题根据系统主题进行配置
+  // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  //   theme = 'dark';
+  // }
   // 基于准备好的dom，初始化echarts实例
   myChart.value = echarts.init(chartContainer.value);
   // const data = [
@@ -230,6 +234,15 @@ onUnmounted(() => {
     <el-button type="primary" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
     <!--图片读入区域-->
     <input type="file" @change="changeIpu" id="inputFile" name="file" class="hidden" />
+  </div>
+  <!-- 图片caption -->
+  <div v-if="srcImgUrl" class="w-full flex items-center justify-around">
+    <div>
+      <el-tag size="large">Before</el-tag>
+    </div>
+    <div>
+      <el-tag size="large">After</el-tag>
+    </div>
   </div>
   <!--结果展示区域-->
   <div class="w-full flex justify-evenly items-center flex-col md:flex-row">
