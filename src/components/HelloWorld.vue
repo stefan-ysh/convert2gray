@@ -110,7 +110,8 @@ const initChart = () => {
       text: 'Grayscale Line Chart',
     },
     tooltip: {
-      // trigger: 'axis',
+      show: true,
+      trigger: 'axis',
       // formatter: function (params: any) {
       //   params = params[0];
       //   var date = new Date(params.name);
@@ -124,9 +125,10 @@ const initChart = () => {
       //     params.value[1]
       //   );
       // },
-      // axisPointer: {
-      //   animation: true
-      // }
+      axisPointer: {
+        type: 'cross',
+        animation: true
+      }
     },
     grid: {
       left: '5%',
