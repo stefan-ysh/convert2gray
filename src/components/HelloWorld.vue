@@ -130,6 +130,31 @@ const initChart = () => {
         animation: true
       }
     },
+    // toolbox: {
+    //   feature: {
+    //     // dataZoom: {
+    //     //   yAxisIndex: 'none'
+    //     // },
+    //     // restore: {},
+    //     saveAsImage: {}
+    //   }
+    // },
+    // dataZoom: [
+    //   {
+    //     show: true,
+    //     realtime: false,
+    //     start: 30,
+    //     end: 70,
+    //     xAxisIndex: [0, 1]
+    //   },
+    //   {
+    //     type: 'outside',
+    //     realtime: false,
+    //     start: 0,
+    //     // end: 70,
+    //     xAxisIndex: [0, 1]
+    //   }
+    // ],
     grid: {
       left: '5%',
       right: '5%',
@@ -181,7 +206,7 @@ const handleKeyUp = () => {
 
 <template>
 
-  <div class="operation-area">
+  <div class="w-[140vh]">
     <div id="main" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="main" style="width: 100%; height: 300px"></div>
 
     <el-button type="default" id='uploadFile' @click="handleUpload">Select Image</el-button>
@@ -190,10 +215,10 @@ const handleKeyUp = () => {
     <input type="file" @change="changeIpu" id="inputFile" name="file" style='display:none' />
   </div>
   <!--结果展示区域-->
-  <div class="input-output">
-    <img v-if="srcImgUrl" id="srcImg" @load="loadimg" style="width: 500px;" :src="srcImgUrl" />
+  <div class="w-full flex justify-evenly items-center mt-5">
+    <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto" style="width: 500px;" :src="srcImgUrl" />
 
-    <img v-else class="empty-img" :src="'/empty.svg'" alt="No Image" />
+    <img v-else class="w-1/2" :src="'/empty.svg'" alt="No Image" />
     <canvas
       v-if="srcImgUrl"
       @mousedown="() => isKeydown = true"
@@ -206,29 +231,18 @@ const handleKeyUp = () => {
 
 <style scoped>
 .operation-area {
-  width: 140vh;
-}
-
-.input-output {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.empty-img {
-  width: 50%;
+  /* width: 140vh; */
 }
 
 #srcImg {
-  width: 100%;
-  height: auto;
+  /* width: 100%; */
+  /* height: auto; */
   /* object-fit: cover; */
 }
 
 img {
-  width: 100%;
-  margin: 0 20px;
+  /* width: 100%; */
+  /* margin: 0 20px; */
 
 }
 </style>
