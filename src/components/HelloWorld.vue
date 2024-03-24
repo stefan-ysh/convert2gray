@@ -215,7 +215,7 @@ const handleKeyUp = () => {
     <input type="file" @change="changeIpu" id="inputFile" name="file" style='display:none' />
   </div>
   <!--结果展示区域-->
-  <div class="w-full flex justify-evenly items-center mt-5">
+  <div class="w-full flex justify-evenly items-center mt-5 flex-col md:flex-row">
     <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto" style="width: 500px;" :src="srcImgUrl" />
 
     <img v-else class="w-1/2" :src="'/empty.svg'" alt="No Image" />
@@ -228,21 +228,3 @@ const handleKeyUp = () => {
     />
   </div>
 </template>
-
-<style scoped>
-.operation-area {
-  /* width: 140vh; */
-}
-
-#srcImg {
-  /* width: 100%; */
-  /* height: auto; */
-  /* object-fit: cover; */
-}
-
-img {
-  /* width: 100%; */
-  /* margin: 0 20px; */
-
-}
-</style>
