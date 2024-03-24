@@ -75,7 +75,8 @@ const getMouseGrayscale = (event: MouseEvent) => {
   // 在控制台输出灰度值
   // console.log(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`);
   data.value.push({
-    value: [`(${mouseX}, ${mouseY})${Math.random()}`, grayscale]
+    name: `(${mouseX}, ${mouseY})`,
+    value: [`${data.value.length}`, grayscale]
   })
 
   // 重新渲染
