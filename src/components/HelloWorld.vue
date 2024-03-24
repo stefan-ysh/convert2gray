@@ -146,6 +146,8 @@ const initChart = () => {
       type: 'value',
       // boundaryGap: [1],
       // 0-255之间
+      // 刻度间距
+      interval: 15,
       min: 0,
       max: 255,
       splitLine: {
