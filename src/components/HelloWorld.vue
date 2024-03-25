@@ -53,7 +53,27 @@ const saveImage = () => {
     a.remove()
   }
 }
+// 保存图表图片
+ const saveEchartImage = () => {
+  const imgDataURL = myChart.value.getDataURL({
+    // 导出的格式，可以是 'png', 'jpeg'
+    type: 'png',
+    // 导出的图片分辨率比例，默认为 1
+    pixelRatio: 2,
+    // 导出的图片背景色，默认是 'white'
+    backgroundColor: '#ffffff'
+  });
 
+  // 创建一个a标签模拟点击进行下载
+  const saveLink = document.createElement('a');
+  saveLink.href = imgDataURL;
+  // 下载的图片名称
+  saveLink.download = 'echart_image';
+  // 模拟点击
+  saveLink.click();
+  // 移除a标签
+  saveLink.remove();
+}
 // 鼠标事件处理函数
 const getMouseGrayscale = (event: MouseEvent) => {
   !myChart.value && initChart()
@@ -151,15 +171,7 @@ const initChart = () => {
         animation: true
       }
     },
-    toolbox: {
-      feature: {
-        // dataZoom: {
-        //   yAxisIndex: 'none'
-        // },
-        // restore: {},
-        saveAsImage: {}
-      }
-    },
+
     // dataZoom: [
     //   {
     //     show: true,
@@ -288,9 +300,10 @@ const exportData = () => {
   <div class="w-full mb-2">
     <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-[95%] h-80"></div>
 
-    <el-button type="primary" plain :icon="Upload" @click="handleUpload">Select Image</el-button>
-    <el-button type="success" :icon="PictureRounded" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
-    <el-button type="primary" :icon="Download" :disabled="!srcImgUrl" @click="exportData">Export Data</el-button>
+    <el-button type="primary" plain :icon="Upload" @click="handleUpload">上传图片</el-button>
+    <el-button type="success" :icon="PictureRounded" v-if="srcImgUrl" @click="saveImage">保存灰度图</el-button>
+    <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="exportData">导出数据</el-button>
+    <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="saveEchartImage">保存图表</el-button>
     <!--图片读入区域-->
     <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
   </div>
