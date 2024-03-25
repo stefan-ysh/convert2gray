@@ -81,9 +81,16 @@ const getMouseGrayscale = (event: MouseEvent) => {
   // 获取鼠标位置
   const mouseX = event.offsetX;
   const mouseY = event.offsetY;
+  const canvasHeight = canvas.height;
+
+  // 确保mouseY在合理范围内
+  let correctedMouseY = mouseY > canvasHeight ? canvasHeight : mouseY;
+
+  // 然后进行Y坐标的转换
+  correctedMouseY = canvasHeight - correctedMouseY;
 
   // 获取鼠标位置的像素颜色
-  const pixel = ctx.getImageData(mouseX, mouseY, 10, 10).data;
+  const pixel = ctx.getImageData(mouseX, mouseY, 1, 1).data;
 
   // 计算灰度值
   const grayscale = Math.round(
@@ -91,9 +98,10 @@ const getMouseGrayscale = (event: MouseEvent) => {
   );
 
   // 在控制台输出灰度值
-  // console.log(`Grayscale value at (${mouseX}, ${mouseY}): ${grayscale}`);
+  console.log(`Grayscale value at (${mouseX}, ${correctedMouseY}): ${grayscale}`);
   data.value.push({
-    name: `(${mouseX}, ${mouseY})`,
+    x: `${mouseX}`,
+    y: `${correctedMouseY}`,
     value: [`${data.value.length}`, grayscale]
   })
 
