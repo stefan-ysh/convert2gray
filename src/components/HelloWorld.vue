@@ -1,8 +1,4 @@
 <script setup lang="ts">
-const data = ref<any[]>([]);
-const isKeydown = ref(false)
-const myChart = ref()
-const chartContainer = ref()
 import * as echarts from "echarts";
 import { onMounted, onUnmounted, ref } from 'vue';
 import {
@@ -11,6 +7,10 @@ import {
   Upload,
   DataLine,
 } from '@element-plus/icons-vue'
+const data = ref<any[]>([]);
+const isKeydown = ref(false)
+const myChart = ref()
+const chartContainer = ref()
 const srcImgUrl = ref()
 const changeIpu = (e: any) => {
   srcImgUrl.value = URL.createObjectURL(e.target.files[0])
@@ -121,6 +121,9 @@ const getMouseGrayscale = (event: MouseEvent) => {
 
   // 重新渲染
   myChart.value.setOption({
+    xAxis: {
+      max: data.value.length - 1
+    },
     series: [{
       data: data.value
     }]
