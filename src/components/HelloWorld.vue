@@ -9,6 +9,7 @@ import {
   Download,
   PictureRounded,
   Upload,
+  DataLine,
 } from '@element-plus/icons-vue'
 const srcImgUrl = ref()
 const changeIpu = (e: any) => {
@@ -303,7 +304,7 @@ const exportData = () => {
     <el-button type="primary" plain :icon="Upload" @click="handleUpload">上传图片</el-button>
     <el-button type="success" :icon="PictureRounded" v-if="srcImgUrl" @click="saveImage">保存灰度图</el-button>
     <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="exportData">导出数据</el-button>
-    <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="saveEchartImage">保存图表</el-button>
+    <el-button type="primary" :icon="DataLine" v-if="srcImgUrl" @click="saveEchartImage">保存图表</el-button>
     <!--图片读入区域-->
     <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
   </div>
