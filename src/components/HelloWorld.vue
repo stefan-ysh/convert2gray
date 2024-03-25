@@ -252,7 +252,7 @@ onUnmounted(() => {
 <template>
 
   <div class="w-full mb-2">
-    <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-full h-80"></div>
+    <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-[95%] h-80"></div>
 
     <el-button type="default" @click="handleUpload">Select Image</el-button>
     <el-button type="primary" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
