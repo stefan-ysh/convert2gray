@@ -184,8 +184,8 @@ const initChart = () => {
     //   }
     // ],
     grid: {
-      left: '2%',
-      right: '2%',
+      left: '5%',
+      right: '0%',
       bottom: '5%',
       top: '10%',
       containLabel: true
