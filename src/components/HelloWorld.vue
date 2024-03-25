@@ -1,12 +1,5 @@
 <script setup lang="ts">
-const data = ref<any[]>([
-  // {
-  //   value: ['22222', 255]
-  // },
-  // {
-  //   value: ['030303', 2]
-  // }
-]);
+const data = ref<any[]>([]);
 const isKeydown = ref(false)
 const myChart = ref()
 const chartContainer = ref()
@@ -260,6 +253,34 @@ onUnmounted(() => {
     myChart.value && myChart.value.resize()
   })
 })
+const exportData = () => {
+  // 数据结构是这样的 [{name: '', value: ''}]，要将此类数据导出表格，一列是 name ，一列是 value
+  // , 同一行 \n 换行
+  let dataStr = 'x,y,灰度值\n';
+  data.value.forEach((item: any) => {
+    // 如果 x或者 y中，有一个是负数，则忽略此数据
+    if (item.x < 0 || item.y < 0) {
+      return
+    }
+    dataStr += `${item.x}, ${item.y}, ${item.value[1]}\n`;
+  });
+  // 创建一个新的Blob对象，包含JSON数据
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  // 创建一个指向该Blob的URL
+  const url = URL.createObjectURL(blob);
+  // 创建一个新的<a>元素用于下载
+  const a = document.createElement('a');
+  // 设置下载链接的href为Blob URL
+  a.href = url;
+  // 设置下载文件的名称，这里添加了一个时间戳以确保唯一性
+  a.download = `data_${new Date().toISOString().replace(/[^\w\s]/gi, '')}.csv`;
+  // 触发下载
+  a.click();
+  // 释放URL对象
+  URL.revokeObjectURL(url);
+  // 移除创建的<a>元素
+  a.remove();
+};
 </script>
 
 <template>
