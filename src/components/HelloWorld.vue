@@ -12,6 +12,11 @@ const myChart = ref()
 const chartContainer = ref()
 import * as echarts from "echarts";
 import { onMounted, onUnmounted, ref } from 'vue';
+import {
+  Download,
+  PictureRounded,
+  Upload,
+} from '@element-plus/icons-vue'
 const srcImgUrl = ref()
 const changeIpu = (e: any) => {
   srcImgUrl.value = URL.createObjectURL(e.target.files[0])
@@ -254,8 +259,9 @@ onUnmounted(() => {
   <div class="w-full mb-2">
     <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-[95%] h-80"></div>
 
-    <el-button type="default" @click="handleUpload">Select Image</el-button>
-    <el-button type="primary" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
+    <el-button type="primary" plain :icon="Upload" @click="handleUpload">Select Image</el-button>
+    <el-button type="success" :icon="PictureRounded" :disabled="!srcImgUrl" @click="saveImage">Save Image</el-button>
+    <el-button type="primary" :icon="Download" :disabled="!srcImgUrl" @click="exportData">Export Data</el-button>
     <!--图片读入区域-->
     <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
   </div>
