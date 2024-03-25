@@ -208,9 +208,9 @@ const initChart = () => {
         show: true,
         lineStyle: {
           type: 'dashed',
-          color: '#eee',
+          color: '#ddd',
           width: 1,
-          opacity: 0.4
+          opacity: 0.5
         }
       }
     },
