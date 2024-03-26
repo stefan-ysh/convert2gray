@@ -12,6 +12,10 @@ const isKeydown = ref(false)
 const myChart = ref()
 const chartContainer = ref()
 const srcImgUrl = ref()
+// 路径颜色
+const pathColor = ref('#5a9cf8')
+// 上一条路径的索引，用于绘制多条路径
+const lastPathIndex = ref(0)
 const changeIpu = (e: any) => {
   srcImgUrl.value = URL.createObjectURL(e.target.files[0])
   // 清除之前数据,避免无法上传同一个文件
@@ -27,6 +31,18 @@ const loadimg = () => {
   cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
   cv.imshow("dstImg", gray);
   src.delete();
+}
+
+// 清除路径
+const clearPath = () => {
+  myChart.value && myChart.value.setOption({
+    series: [{
+      data: []
+    }]
+  })
+  data.value = []
+  lastPathIndex.value = 0
+  loadimg()
 }
 const handleUpload = () => {
   // 清除之前数据
@@ -116,6 +132,7 @@ const getMouseGrayscale = (event: MouseEvent) => {
   data.value.push({
     x: `${mouseX}`,
     y: `${correctedMouseY}`,
+    originalY: `${mouseY}`,
     value: [`${data.value.length}`, grayscale]
   })
 
@@ -249,6 +266,24 @@ const initChart = () => {
   // 使用刚指定的配置项和数据显示图表。
   myChart.value.setOption(option);
 }
+// 绘制鼠标移动的路径
+const drawMousePath  = () => {
+  // 根据data 中的坐标值在 canvas 上绘制圆点，记录其路径
+  const canvas = document.getElementById('dstImg') as HTMLCanvasElement
+  const ctx = canvas?.getContext('2d')
+  if (ctx) {
+    data.value.forEach((item: any, index: number) => {
+      if (index < lastPathIndex.value) {
+        return
+      }
+      ctx.beginPath()
+      ctx.arc(item.x, item.originalY, 5, 0, 5 * Math.PI)
+      ctx.fillStyle = pathColor.value
+      ctx.fill()
+    })
+  }
+  lastPathIndex.value = data.value.length
+}
 const handleKeyUp = () => {
   isKeydown.value = false
 
@@ -258,6 +293,8 @@ const handleKeyUp = () => {
       data: data.value
     }]
   })
+  // 绘制鼠标移动的路径
+  drawMousePath()
 }
 onMounted(() => {
   window.addEventListener('resize', () => {
@@ -335,6 +372,17 @@ const exportData = () => {
         保存图表
       </span>
     </el-button>
+    <div class="inline-block ml-3 mr-3" v-if="srcImgUrl">
+      <!-- <span class="demonstration">路径颜色</span> -->
+      <el-color-picker v-model="pathColor" />
+    </div>
+    <el-button type="primary" v-if="srcImgUrl" @click="clearPath">
+      <el-icon>
+        <BrushFilled />
+      </el-icon>
+      <span class="hidden md:block">
+        清除路径
+      </span>
     </el-button>
     <!--图片读入区域-->
     <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
