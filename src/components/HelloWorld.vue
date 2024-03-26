@@ -79,7 +79,7 @@ const saveImage = () => {
 const getMouseGrayscale = (event: MouseEvent) => {
   !myChart.value && initChart()
   if (!isKeydown.value) {
-    // return
+    return
   }
   // 获取画布元素
   const canvas = document.getElementById("dstImg") as HTMLCanvasElement;
