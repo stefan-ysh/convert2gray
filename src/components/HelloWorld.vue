@@ -304,20 +304,28 @@ const exportData = () => {
   <div class="w-full mb-2">
     <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-[95%] h-80"></div>
 
-    <el-button type="primary" plain :icon="Upload" @click="handleUpload">上传图片</el-button>
-    <el-button type="success" :icon="PictureRounded" v-if="srcImgUrl" @click="saveImage">保存灰度图</el-button>
-    <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="exportData">导出数据</el-button>
-    <el-button type="primary" :icon="DataLine" v-if="srcImgUrl" @click="saveEchartImage">保存图表</el-button>
+    <el-button type="primary" plain :icon="Upload" @click="handleUpload">
+      <span class="hidden md:block">上传图像</span>
+    </el-button>
+    <el-button type="success" :icon="PictureRounded" v-if="srcImgUrl" @click="saveImage">
+      <span class="hidden md:block">保存灰度图</span>
+    </el-button>
+    <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="exportData">
+      <span class="hidden md:block">导出数据</span>
+    </el-button>
+    <el-button type="primary" :icon="DataLine" v-if="srcImgUrl" @click="saveEchartImage">
+      <span class="hidden md:block">保存图表</span>
+    </el-button>
     <!--图片读入区域-->
     <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
   </div>
   <!--结果展示区域-->
   <div class="w-[100vw] flex justify-evenly items-center flex-col md:flex-row">
-    <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto w-1/2 mr-1" :src="srcImgUrl" />
+    <img v-if="srcImgUrl" id="srcImg" @load="loadimg" class="h-auto w-4/5 md:w-1/2 mr-1" :src="srcImgUrl" />
 
-    <img v-else class="w-1/3" :src="'/empty.svg'" alt="No Image" />
+    <img v-else class=" w-full md:w-1/3" :src="'/empty.svg'" alt="No Image" />
     <canvas
-      class="mt-10 md:mt-0 ml-1 w-1/2"
+      class="mt-10 md:mt-0 ml-1 w-4/5 md:w-1/2"
       v-if="srcImgUrl"
       @mousedown="() => isKeydown = true"
       @mouseup="handleKeyUp"
