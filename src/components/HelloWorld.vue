@@ -6,11 +6,17 @@ import {
   PictureRounded,
   Upload,
   DataLine,
+  BrushFilled
 } from '@element-plus/icons-vue'
+// 表格数据，存储的是坐标点和对应的灰度值 [{ x: 0, y: 0, value: 0 }]
 const data = ref<any[]>([]);
+// 鼠标是否按下
 const isKeydown = ref(false)
+// 图表实例
 const myChart = ref()
+// 图表容器
 const chartContainer = ref()
+// 源地址
 const srcImgUrl = ref()
 // 路径颜色
 const pathColor = ref('#5a9cf8')
@@ -135,18 +141,16 @@ const getMouseGrayscale = (event: MouseEvent) => {
     originalY: `${mouseY}`,
     value: [`${data.value.length}`, grayscale]
   })
-
+  const max = data.value.length - 1
   // 重新渲染
   myChart.value.setOption({
     xAxis: {
-      max: data.value.length - 1
+      max
     },
     series: [{
       data: data.value
     }]
   })
-  // 绘制一个小像素在鼠标位置
-  // ctx.fillRect(mouseX, mouseY, 1, 1);
 }
 
 const initChart = () => {
