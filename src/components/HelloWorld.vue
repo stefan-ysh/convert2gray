@@ -303,18 +303,38 @@ const exportData = () => {
 
   <div class="w-full mb-2">
     <div id="chartContainer" :style="{visibility: !srcImgUrl ? 'hidden' : 'visible'}" ref="chartContainer" class="w-[95%] h-80"></div>
-
-    <el-button type="primary" plain :icon="Upload" @click="handleUpload">
-      <span class="hidden md:block">上传图像</span>
+    <el-button type="primary" @click="handleUpload">
+      <el-icon>
+        <Upload />
+      </el-icon>
+      <span class="hidden md:block">
+        上传图像
+      </span>
     </el-button>
-    <el-button type="success" :icon="PictureRounded" v-if="srcImgUrl" @click="saveImage">
-      <span class="hidden md:block">保存灰度图</span>
+    <el-button type="primary" v-if="srcImgUrl" @click="saveImage">
+      <el-icon>
+        <PictureRounded />
+      </el-icon>
+      <span class="hidden md:block">
+        保存灰度图
+      </span>
     </el-button>
-    <el-button type="primary" :icon="Download" v-if="srcImgUrl" @click="exportData">
-      <span class="hidden md:block">导出数据</span>
+    <el-button type="primary" v-if="srcImgUrl" @click="exportData">
+      <el-icon>
+        <Download />
+      </el-icon>
+      <span class="hidden md:block">
+        导出数据
+      </span>
     </el-button>
-    <el-button type="primary" :icon="DataLine" v-if="srcImgUrl" @click="saveEchartImage">
-      <span class="hidden md:block">保存图表</span>
+    <el-button type="primary" v-if="srcImgUrl" @click="saveEchartImage">
+      <el-icon>
+        <DataLine />
+      </el-icon>
+      <span class="hidden md:block">
+        保存图表
+      </span>
+    </el-button>
     </el-button>
     <!--图片读入区域-->
     <input type="file" accept="image/*" @change="changeIpu" id="inputFile" name="file" class="hidden" />
