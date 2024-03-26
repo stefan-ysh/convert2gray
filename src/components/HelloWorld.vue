@@ -350,6 +350,7 @@ const exportData = () => {
       @mousedown="() => isKeydown = true"
       @mouseup="handleKeyUp"
       @mousemove="getMouseGrayscale"
+      @mouseleave="handleKeyUp"
       id="dstImg"
     />
   </div>
