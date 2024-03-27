@@ -20,6 +20,17 @@ const chartContainer = ref()
 const srcImgUrl = ref()
 // 路径颜色
 const pathColor = ref('#5a9cf8')
+// 预设颜色
+const predefineColors = ref([
+  '#ff4500',
+  '#ff8c00',
+  '#ffd700',
+  '#90ee90',
+  '#00ced1',
+  '#1e90ff',
+  '#c71585',
+])
+// 图表线段颜色
 // 上一条路径的索引，用于绘制多条路径
 const lastPathIndex = ref(0)
 const changeIpu = (e: any) => {
@@ -378,7 +389,7 @@ const exportData = () => {
     </el-button>
     <div class="inline-block ml-3 mr-3" v-if="srcImgUrl">
       <!-- <span class="demonstration">路径颜色</span> -->
-      <el-color-picker v-model="pathColor" />
+      <el-color-picker v-model="pathColor" :predefine="predefineColors" />
     </div>
     <el-button type="primary" v-if="srcImgUrl" @click="clearPath">
       <el-icon>
