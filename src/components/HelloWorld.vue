@@ -31,6 +31,7 @@ const predefineColors = ref([
   '#c71585',
 ])
 // 图表线段颜色
+const pieces = ref<any>([])
 // 上一条路径的索引，用于绘制多条路径
 const lastPathIndex = ref(0)
 const changeIpu = (e: any) => {
@@ -76,6 +77,8 @@ const handleUpload = () => {
   const uploadInput = document.getElementById('inputFile')
   uploadInput && uploadInput.click()
 }
+
+//保存灰度图
 const saveImage = () => {
   const canvas = document.getElementById('dstImg') as HTMLCanvasElement
   const img = canvas?.toDataURL('image/png')
@@ -152,18 +155,11 @@ const getMouseGrayscale = (event: MouseEvent) => {
     originalY: `${mouseY}`,
     value: [`${data.value.length}`, grayscale]
   })
-  const max = data.value.length - 1
-  // 重新渲染
-  myChart.value.setOption({
-    xAxis: {
-      max
-    },
-    series: [{
-      data: data.value
-    }]
-  })
+  // 渲染图表
+  renderChart()
 }
 
+// 初始化图表
 const initChart = () => {
   // let theme = 'light';
 // 图表主题根据系统主题进行配置
@@ -172,14 +168,7 @@ const initChart = () => {
   // }
   // 基于准备好的dom，初始化echarts实例
   myChart.value = echarts.init(chartContainer.value);
-  // const data = [
-  //   {
-  //     value: [1, 2]
-  //   },
-  //   {
-  //     value: [3, 2]
-  //   },
-  // ];
+  
   const option = {
     title: {
       // 灰度图
@@ -273,7 +262,6 @@ const initChart = () => {
         //   position: 'top',
         //   color: '#409EFF'
         // },
-        data: data.value,
         smooth: true
       }
     ]
@@ -297,8 +285,43 @@ const drawMousePath  = () => {
       ctx.fill()
     })
   }
-  lastPathIndex.value = data.value.length
+  lastPathIndex.value = data.value.length - 1
 }
+// 渲染图表
+const renderChart = () => {
+  // x 轴最大值
+  const max = data.value.length
+  const idx = lastPathIndex.value + 1
+
+  // 线段颜色
+  pieces.value.push(
+    {
+      gt: idx,
+      lte: idx + data.value.length - idx,
+      color: pathColor.value,
+    }
+  )
+
+  // 视觉映射，此处作用为分线段颜色标记
+  const visualMap = [{
+    show: false,
+    dimension: 0,
+    seriesIndex: 0,
+    pieces: pieces.value,
+  }]
+
+  // 重新渲染
+  myChart.value.setOption({
+    xAxis: {
+      max
+    },
+    visualMap,
+    series: [{
+      data: data.value
+    }]
+  })
+}
+// 鼠标抬起事件处理
 const handleKeyUp = () => {
   isKeydown.value = false
 
