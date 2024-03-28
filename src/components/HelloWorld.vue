@@ -276,7 +276,7 @@ const drawMousePath  = () => {
   const ctx = canvas?.getContext('2d')
   if (ctx) {
     data.value.forEach((item: any, index: number) => {
-      if (index < lastPathIndex.value) {
+      if (index < lastPathIndex.value + 1) {
         return
       }
       ctx.beginPath()
